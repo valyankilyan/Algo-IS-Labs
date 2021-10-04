@@ -35,6 +35,7 @@ void qsort(int l, int r) {
             j--;
         }
     }
+    cout << v[i-1] << " " << v[j+1] << " " << i << " " << j << endl;
     if (l < j) qsort(l, j);
     if (r > i) qsort(i, r);
 }
