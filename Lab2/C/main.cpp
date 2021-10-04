@@ -15,27 +15,22 @@ int inversions;
 vector<int> v;
 
 void merge(int l, int m, int r) {
-	cerr << l << " " << m << " " << r << " -> ";
     int save[r - l + 1];
-    for (int i = l; i <= r; i++) {
-		save[i - l] = v[i];
-		cerr << save[i-l] << " ";
-	}
-	cerr << "-> ";
-	int sl = 0, el = m - l;
-	int sr = m - l + 1, er = r - l;
-	for (int p = l, pl = sl, pr = sr; p <= r; p++) {
-		if (pl <= el && (pr > er || save[pl] <= save[pr])) {
-			v[p] = save[pl];
-			pl++;
-			inversions+= pr - sr;
-		} else if (pr <= er && (pl > pr || save[pr] <= save[pl])) {
-			v[p] = save[pr];
-			pr++;
-		}
-	}
+    for (int i = l; i <= r; i++)
+        save[i - l] = v[i];
 
-	cerr << inversions << endl;
+    int sl = 0, el = m - l;
+    int sr = m - l + 1, er = r - l;
+    for (int p = l, pl = sl, pr = sr; p <= r; p++) {
+        if (pl <= el && (pr > er || save[pl] <= save[pr])) {
+            v[p] = save[pl];
+            pl++;
+            inversions += pr - sr;
+        } else if (pr <= er && (pl > pr || save[pr] <= save[pl])) {
+            v[p] = save[pr];
+            pr++;
+        }
+    }
 }
 
 void mergeSort(int l, int r) {
@@ -56,9 +51,9 @@ void solve() {
     for (int i = 0; i < n; i++)
         cin >> v[i];
 
-	mergeSort(0, n-1);
+    mergeSort(0, n - 1);
 
-	cout << inversions << '\n';
+    cout << inversions << '\n';
 }
 
 int main() {
