@@ -13,7 +13,8 @@ using namespace std;
  
 
 void solve(){
-	
+	int n;
+	cin >> n;	
 }
 
 int main(){
@@ -23,10 +24,10 @@ int main(){
 
 	int tests = 1;
 
+	freopen("antiqs.in", "r", stdin);
+	freopen("antiqs.out", "w", stdout);
+
 #ifdef LOCAL
-	bool a;
-	a = freopen("in.data", "r", stdin);
-	a = freopen("out.data", "w", stdout);
 	cin >> tests;
 #endif
 
