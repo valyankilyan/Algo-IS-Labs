@@ -11,10 +11,10 @@ using namespace std;
 #define INF 1000000009
 #define MOD 1000000007
 
-int inversions;
 vector<int> v;
 
-void merge(int l, int m, int r) {
+ll merge(int l, int m, int r) {
+	ll inv = 0;
     int save[r - l + 1];
     for (int i = l; i <= r; i++)
         save[i - l] = v[i];
@@ -25,35 +25,37 @@ void merge(int l, int m, int r) {
         if (pl <= el && (pr > er || save[pl] <= save[pr])) {
             v[p] = save[pl];
             pl++;
-            inversions += pr - sr;
+            inv += pr - sr;
         } else if (pr <= er && (pl > pr || save[pr] <= save[pl])) {
             v[p] = save[pr];
             pr++;
         }
     }
+	return inv;
 }
 
-void mergeSort(int l, int r) {
+ll getInversions(int l, int r) {
     if (r == l)
-        return;
+        return 0;
     int m = (r + l) / 2;
 
-    mergeSort(l, m);
-    mergeSort(m + 1, r);
-    merge(l, m, r);
+    ll a = getInversions(l, m);
+    ll b = getInversions(m + 1, r);
+    ll mer = merge(l, m, r);
+
+    return a + b + mer;
 }
 
-void solve() {
-    inversions = 0;
+void solve() {    
     int n;
     cin >> n;
     v.resize(n);
     for (int i = 0; i < n; i++)
         cin >> v[i];
 
-    mergeSort(0, n - 1);
+    ll inv = getInversions(0, n - 1);
 
-    cout << inversions << '\n';
+    cout << inv << '\n';
 }
 
 int main() {
