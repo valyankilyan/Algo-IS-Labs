@@ -9,12 +9,25 @@ using namespace std;
  
 #define MAXN 200005
 #define INF 1000000009
-#define MOD 1000000007
- 
+#define MOD 1000000007 
 
 void solve(){
 	int n;
-	cin >> n;	
+	cin >> n;
+	int out[n];
+	for (int i = 0; i < n; i++) {
+		out[i] = i+1;
+	}
+
+	for (int b = 2; b < n; b++) {
+		int save = out[b];
+		out[b] = out[b/2];
+		out[b/2] = save;
+	}
+
+	for (int i = 0; i < n; i++)
+		cout << out[i] << " ";
+	cout << endl;
 }
 
 int main(){
