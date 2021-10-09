@@ -15,12 +15,6 @@ using namespace std;
 vector<int> v;
 
 int qselect(int l, int r, int aim) {
-    // for (int i = 0; i < v.size(); i++) {
-    //     if (i == l) cerr << "| ";
-    //     cerr << v[i] << " ";
-    //     if (i == r) cerr << "| ";
-    // }
-    // cerr << endl;
 
     if (l == r && l == aim)
         return v[aim];
@@ -40,14 +34,6 @@ int qselect(int l, int r, int aim) {
         }
     }
 
-    // for (int q = l; q <= r; q++) {
-    //     if (q == j+1) cerr << "} ";
-    //     cerr << v[q] << " ";
-    //     if (q == i-1) cerr << "{ ";
-    // }	
-	// cerr << endl;
-
-
     if (l <= aim && aim <= j)
         return qselect(l, j, aim);
     else if (i <= aim && aim <= r)
@@ -66,13 +52,7 @@ void solve() {
     cin >> a >> b >> c >> v[0] >> v[1];
     for (int i = 2; i < n; i++) {
         v[i] = a * v[i - 2] + b * v[i - 1] + c;
-    }
-
-    // cerr << "==============\n";
-    // for (int i = 0; i < n; i++) {
-    //     cerr << v[i] << " ";
-    // }
-    // cerr << endl;
+    }    
 
     cout << qselect(0, n - 1, k - 1) << endl;
 }
@@ -96,28 +76,3 @@ int main() {
     while (tests--)
         solve();
 }
-
-// int qselect(int a[], int l, int r, int aim) {
-
-// 	int pivot = a[(l+r)/2], i=l, j=r;
-// 	while (i <= j) {
-// 		while (a[i] < pivot)
-// 			i++;
-// 		while (pivot < a[j])
-// 			j--;
-
-// 		if (i <= j) {
-// 			int save = a[i];
-// 			a[i] = a[j];
-// 			a[j] = save;
-// 			i++;
-// 			j--;
-// 		}
-// 	}
-// 	if (l == r - 1) return a[aim];
-
-// 	if (l < j && aim <= j) return qselect(a, l, j, aim);
-// 	if (r > i && aim >= i) return qselect(a, i, r, aim);
-
-// 	return 0;
-// }
