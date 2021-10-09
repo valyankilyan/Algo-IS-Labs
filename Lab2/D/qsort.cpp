@@ -37,7 +37,7 @@ void qsort(int l, int r) {
     }
     cout << v[i-1] << " " << v[j+1] << " " << i << " " << j << endl;
     if (l < j) qsort(l, j);
-    if (r > i) qsort(i, r);
+    if (i < r) qsort(i, r);
 }
 
 void qsort_pivotout(int l, int r) {
