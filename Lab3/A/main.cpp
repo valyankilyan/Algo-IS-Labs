@@ -12,8 +12,18 @@ using namespace std;
 #define MOD 1000000007
  
 
-void solve(){
-	
+void solve(){	
+	int n; 
+	cin >> n; 
+	int a[n+1];
+	a[0] = -2*INF;	
+	bool isHeap = 1;
+	for (int i = 1; i <= n; i++) {
+		cin >> a[i];
+		if (a[i] < a[i / 2])
+			isHeap = 0;
+	}
+	cout << (isHeap ? "YES" : "NO") << endl;
 }
 
 int main(){
@@ -23,10 +33,9 @@ int main(){
 
 	int tests = 1;
 
-#ifdef LOCAL
-	bool a;
-	a = freopen("in.data", "r", stdin);
-	a = freopen("out.data", "w", stdout);
+	freopen("isheap.in", "r", stdin);
+	freopen("isheap.out", "w", stdout);
+#ifdef LOCAL	
 	cin >> tests;
 #endif
 
