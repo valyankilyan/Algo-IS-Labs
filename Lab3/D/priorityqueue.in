@@ -1,0 +1,14 @@
+push 8
+push 8
+push 8
+push 8
+push 8
+push 8
+push 8
+extract-min
+extract-min
+extract-min
+extract-min
+extract-min
+extract-min
+extract-min
