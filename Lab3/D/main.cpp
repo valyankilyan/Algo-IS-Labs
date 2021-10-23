@@ -21,7 +21,7 @@ class pqueue {
     void decrease_if_needs() {
         if ((cur + 1) * 2 == capacity) {
             capacity /= 2;
-            pair<int, int> new_array[capacity];
+            pair<int, int>* new_array = new pair<int,int>[capacity];
             for (int i = 0; i < cur; i++) {
                 new_array[i] = array[i];
             }
@@ -53,8 +53,8 @@ class pqueue {
     }
 
     void _swap(int a, int b) {
-		// if (a == b)
-		// 	return;
+		if (a == b)
+			return;
         swap(array[a], array[b]);
         swap(queue_index[array[a].s], queue_index[array[b].s]);
     }
@@ -71,14 +71,12 @@ class pqueue {
     }
 
     void heapify_downwards(int n) {
-		// if (n == cur)
-		// 	return;
+		if (cur == 0)
+			return;
         int smallest = n;
         for (int i = 1; i <= 2 && n * 2 + i < cur; i++)
             if (array[n].f > array[n * 2 + i].f)
-                smallest = n * 2 + i;
-
-		cerr << "hd = " << (smallest != n) << " ";
+                smallest = n * 2 + i;		
 
         if (smallest != n) {
             _swap(n, smallest);
@@ -97,8 +95,7 @@ class pqueue {
     }
 
     void push(int in) {
-        increase_if_needs();
-        print_variables();
+        increase_if_needs();        
 
         array[cur] = mp(in, qicur);
         queue_index[(qicur++)] = (cur++);
@@ -106,18 +103,15 @@ class pqueue {
         heapify_upwards(cur - 1);
     }
 
-    void extract_and_print_min() {
-		print_variables();
+    void extract_and_print_min() {		
         if (cur == 0) {
             cout << "*";
             return;
         }
-
         _swap(0, (--cur));
-        heapify_downwards(0);
+        heapify_downwards(0);				
         cout << array[cur].f;
-        decrease_if_needs();
-		cerr << "okay " << cur << " ";
+        decrease_if_needs();		
     }
 
     void decrease_key(int i, int new_value) {
@@ -147,7 +141,7 @@ void solve() {
     while (cin >> command) {
         number_of_push.pb(-1);
 
-		cerr << command << " : ";
+		// cerr << command << " : ";
 
         if (command == "push") {
             int in;
@@ -163,12 +157,11 @@ void solve() {
 
         if (command == "decrease-key") {
             int key, value;
-            cin >> key >> value;
-			cerr << "number_of_push = " << number_of_push[key-1] << " | ";
+            cin >> key >> value;			
             q.decrease_key(number_of_push[key-1], value);
         }
 
-        q.print_array();
+        // q.print_array();
     }
 }
 
