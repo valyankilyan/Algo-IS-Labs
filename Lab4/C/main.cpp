@@ -1,35 +1,94 @@
-#include <bits/stdc++.h>
+#include <iostream>
 using namespace std;
 
-#define pb push_back
-#define f first
-#define s second
-#define mp make_pair
-#define ll long long
- 
-#define MAXN 200005
-#define INF 1000000009
-#define MOD 1000000007
- 
+struct edge {
+	char value;
+	struct edge *next;
+};
 
-void solve(){
-	
+class stack {
+	edge *cur;
+
+ public:
+	stack() {
+		cur = NULL;
+	}
+
+	bool empty() {
+		return cur == NULL;
+	}
+
+	void push(int in) {
+		if(cur == NULL) {
+			edge *tmp = new edge;
+			tmp->value = in;
+			tmp->next = NULL;
+			cur = tmp;
+			return;
+		}
+
+		edge *_next = new edge;
+
+		_next->value = cur->value;
+		_next->next = cur->next;
+
+		cur->value = in;
+		cur->next = _next;
+	}
+
+	char top() {
+		return cur->value;
+	}
+
+	char pop() {
+		char out = cur->value;
+
+		if(cur->next != NULL)
+			cur = cur->next;
+		else
+			cur = NULL;
+
+		return out;
+	}
+};
+
+bool isLeftBracket(char b) {
+	return (b == '(') || (b == '[');
 }
 
-int main(){
-	ios_base::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
+bool isFit(char l, char r) {
+	return (l == '[' && r == ']') || (l == '(' && r == ')');
+}
 
-	int tests = 1;
+void solve() {
+    string s;    
 
-#ifdef LOCAL
-	bool a;
-	a = freopen("in.data", "r", stdin);
-	a = freopen("out.data", "w", stdout);
-	cin >> tests;
-#endif
+    while (cin >> s) {
+        stack st;
+		bool ans = 1;
+        for (int i = 0; ans && i < s.size(); i++) {
+            if (isLeftBracket(s[i])) {
+				st.push(s[i]);
+			} else if (st.empty() || !isFit(st.top(), s[i])) {
+				ans = 0;
+			} else {
+				st.pop();
+			}
+        }
+		cout << (ans ? "YES" : "NO") << endl;
+    }
 
-	while(tests--)
-		solve();
+}
+
+int main() {    
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int n = 1;
+
+    freopen("brackets.in", "r", stdin);
+    freopen("brackets.out", "w", stdout);
+
+    while (n--)
+        solve();
 }

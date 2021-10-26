@@ -1,35 +1,75 @@
-#include <bits/stdc++.h>
+#include <iostream>
 using namespace std;
 
-#define pb push_back
-#define f first
-#define s second
-#define mp make_pair
-#define ll long long
+struct edge {
+	int value;
+	struct edge *next;
+};
 
-#define MAXN 200005
-#define INF 1000000009
-#define MOD 1000000007
- 
+class stack {
+	edge *cur;
 
-void solve(){
-	
+ public:
+	stack() {
+		cur = NULL;
+	}
+
+	void push(int in) {
+		if(cur == NULL) {
+			edge *tmp = new edge;
+			tmp->value = in;
+			tmp->next = NULL;
+			cur = tmp;
+			return;
+		}
+
+		edge *_next = new edge;
+
+		_next->value = cur->value;
+		_next->next = cur->next;
+
+		cur->value = in;
+		cur->next = _next;
+	}
+
+	int pop() {
+		int out = cur->value;
+
+		if(cur->next != NULL)
+			cur = cur->next;
+		else
+			cur = NULL;
+
+		return out;
+	}
+};
+
+void solve() {
+	stack st;
+	int n;
+	cin >> n;
+	for(int i = 0; i < n; i++) {
+		char c;
+		cin >> c;
+		if(c == '-') {
+			cout << st.pop() << endl;
+		} else {
+			int in;
+			cin >> in;
+			st.push(in);
+		}
+	}
 }
 
-int main(){
-	ios_base::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
+int main() {
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
 
-	int tests = 1;
+	int n = 1;
 
-#ifdef LOCAL
-	bool a;
-	a = freopen("in.data", "r", stdin);
-	a = freopen("out.data", "w", stdout);
-	cin >> tests;
-#endif
+	freopen("stack.in", "r", stdin);
+	freopen("stack.out", "w", stdout);
 
-	while(tests--)
+	while(n--)
 		solve();
 }
