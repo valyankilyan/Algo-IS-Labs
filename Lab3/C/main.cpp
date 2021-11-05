@@ -23,7 +23,8 @@ void countSort(string arr[], int size, int d) {
 
     string out[size];
     for (int i = size - 1; i >= 0; i--) {
-        out[(--count[arr[i][d] - 'a'])] = arr[i];
+        count[arr[i][d] - 'a']--;
+        out[(count[arr[i][d] - 'a'])] = arr[i];
     }
 
     for (int i = 0; i < size; i++) {

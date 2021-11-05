@@ -75,7 +75,7 @@ void solve() {
 				st.pop();
 			}
         }
-		cout << (ans ? "YES" : "NO") << endl;
+		cout << (ans && st.empty() ? "YES" : "NO") << endl;
     }
 
 }
