@@ -46,7 +46,8 @@ class queue {
     }
 
     int pop() {
-        if (head == NULL) return -__INT32_MAX__;
+        if (head == NULL)
+            return -__INT32_MAX__;
         int out = head->value;
 
         if (head->next != NULL) {
