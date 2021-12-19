@@ -49,10 +49,9 @@ class Tree {
         if (root->value == x && !root->left && !root->right) {
             delete root;
             root = NULL;
-			return;
+            return;
         }
-		root = removeNode(root, x);
-		root = correctNode(root);
+        root = removeNode(root, x);
     }
 
     int correctHeight(Node* rt) {
@@ -96,20 +95,14 @@ class Tree {
         }
 
         int space = (1 << (v.size() - 1)) - 1;
-        for (auto x : v) {
-            // int prev = 0;
-            for (auto y : x) {
-                // cerr << string(max(space - prev, 0), ' ');
-                cerr << string(space, ' ');
-                // prev = 0;
+        for (auto x : v) {        
+            for (auto y : x) {                
+                cerr << string(space, ' ');                
                 if (y != NULL) {
                     cerr << y->value << " ";
-                    // prev = to_string(y->value).size() - 1;
                 } else {
                     cerr << "- ";
                 }
-                // int spacing = max(space - prev, 0);
-                // prev -= min(spacing, prev);
                 cerr << string(space, ' ');
             }
             space = space >> 1;
@@ -157,64 +150,62 @@ class Tree {
         return node;
     }
 
-	Node* removeNode(Node* node, int x) {
-		if (!node) {
-			return NULL;
-		}		
+    Node* removeNode(Node* node, int x) {
+        if (!node) {
+            return NULL;
+        }
 
-		if (node->value < x) {
-			node->right = removeNode(node->right, x);
-			node->right = correctNode(node->right);
-		} else if (x < node->value) {
-			node->left = removeNode(node->left, x);
-			node->left = correctNode(node->left);
-		} else {
-			if (node->left) {
-				if (node->right) {
-					if (node->right->left) {
-						int value;
-						node->right = removeLeftest(node->right, &value);
-					} else {
-						node->right->left = node->left;
-						Node* right = node->right;
-						delete node;
-						return right;
-					}
-				} else {
-					Node* left = node->left;
-					delete node;
-					return left;
-				}
-			} else {
-				Node* right = node->right;
-				delete node;
-				return right;
-			}
-		}
-		return node;
-	}
+        if (node->value < x) {
+            node->right = removeNode(node->right, x);
+        } else if (x < node->value) {
+            node->left = removeNode(node->left, x);
+        } else {
+            if (!node->left && !node->right) {
+                delete node;
+                node = NULL;
+                return NULL;
+            } else if (!node->left) {
+                Node* right = node->right;
+                delete node;
+                return right;
+            } else {
+                int value = 0;
+                node->left = removeRightest(node->left, &value);
+                node->value = value;
+            }
+        }
+        adjustHeight(node);
+        node = correctNode(node);
+        return node;
+    }
 
-	Node* removeLeftest(Node* node, int *value) {
-		if (node->left) {
-			node->left = removeLeftest(node->left, value);
-			return node;
-		}
-		*value = node->value;
-		if (node->right) {			
-			Node* right = node->right;
-			delete node;
-			return right;
-		} else {
-			delete node;
-			return NULL;
-		}
-	}
+    Node* removeRightest(Node* node, int* value) {
+        if (node->right) {
+            node->right = removeRightest(node->right, value);
+        } else {
+            *value = node->value;
+            if (node->left) {
+                Node* left = node->left;
+                delete node;
+                node = left;
+            } else {
+                delete node;
+                return NULL;
+            }
+        }
+        adjustHeight(node);
+        correctNode(node);
+        return node;
+    }
 
     void adjustHeight(Node* rt) {
         rt->height = max(getHeight(rt->right), getHeight(rt->left)) + 1;
     }
 
     Node* correctNode(Node* rt) {
+        if (!rt) {
+            return NULL;
+        }
         if (getBalance(rt) > 1) {
             if (getBalance(rt->right) < 0) {
                 rt = leftHeavyRotation(rt);
@@ -299,19 +290,20 @@ void solve() {
         }
     }
 
-	// tree.print_tree();
+    // tree.print_tree();
     tree.correctHeight(tree.root);
     int d;
     cin >> d;
+    // cerr << "deleting: " << d << endl;
     tree.remove(d);
-	// tree.print_tree();
+    // tree.print_tree();
 
     int ind = 1;
     queue<Node*> q_out;
-    cout << --n << endl;
-	if (tree.root) {
-		q_out.push(tree.root);
-	}
+    cout << --n << '\n';
+    if (tree.root) {
+        q_out.push(tree.root);
+    }
     while (!q_out.empty()) {
         int l = 0, r = 0;
         if (q_out.front()->left) {
@@ -322,7 +314,7 @@ void solve() {
             r = ++ind;
             q_out.push(q_out.front()->right);
         }
-        cout << q_out.front()->value << " " << l << " " << r << endl;
+        cout << q_out.front()->value << ' ' << l << ' ' << r << '\n';
         q_out.pop();
     }
 }
