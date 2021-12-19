@@ -63,6 +63,13 @@ class Tree {
         return rt->height;
     }
 
+    int getSize(Node* node) {
+        if (!node) {
+            return 0;
+        }
+        return getSize(node->right) + getSize(node->left) + 1;
+    }
+
     void print_tree() {
         cerr << "------------------\n";
         if (!root) {
@@ -95,9 +102,9 @@ class Tree {
         }
 
         int space = (1 << (v.size() - 1)) - 1;
-        for (auto x : v) {        
-            for (auto y : x) {                
-                cerr << string(space, ' ');                
+        for (auto x : v) {
+            for (auto y : x) {
+                cerr << string(space, ' ');
                 if (y != NULL) {
                     cerr << y->value << " ";
                 } else {
@@ -162,7 +169,6 @@ class Tree {
         } else {
             if (!node->left && !node->right) {
                 delete node;
-                node = NULL;
                 return NULL;
             } else if (!node->left) {
                 Node* right = node->right;
@@ -187,14 +193,15 @@ class Tree {
             if (node->left) {
                 Node* left = node->left;
                 delete node;
-                node = left;
+                adjustHeight(left);
+                return left;
             } else {
                 delete node;
                 return NULL;
             }
         }
         adjustHeight(node);
-        correctNode(node);
+        node = correctNode(node);
         return node;
     }
 
@@ -260,6 +267,47 @@ class Tree {
     }
 };
 
+#define NODES_COUNT 31
+#define LEN 16
+
+Tree make_test(int nodes) {
+    Tree tree = Tree();
+    for (int i = 1; i <= NODES_COUNT; i++) {
+        tree.insert(i);
+    }
+    for (int i = 0; i < LEN; i++) {
+        if ((1 << i) & nodes) {
+            tree.remove(i * 2 - 1);
+        }
+    }
+
+    return tree;
+}
+
+void test() {
+    int n = 1;
+    for (int nodes = 0; nodes < (1 << LEN) && n; nodes++) {
+        cerr << nodes << endl;
+        for (int del = 1; del < NODES_COUNT; del++) {
+            if (del % 2)
+                continue;
+            Tree tree = make_test(nodes);
+            n = tree.getSize(tree.root) - 1;
+            tree.remove(del);
+            if (n != tree.getSize(tree.root)) {
+                make_test(nodes).print_tree();
+                tree.print_tree();
+                cerr << "DEL = " << del << endl;
+                while (n--)
+                    cerr << "kek";
+                cerr << endl;
+                nodes = INF;
+                break;
+            }
+        }
+    }
+}
+
 void solve() {
     int n;
     cin >> n;
@@ -301,7 +349,7 @@ void solve() {
     int ind = 1;
     queue<Node*> q_out;
     cout << --n << '\n';
-    if (tree.root) {
+    if (n) {
         q_out.push(tree.root);
     }
     while (!q_out.empty()) {
