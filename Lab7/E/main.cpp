@@ -57,9 +57,9 @@ class Tree {
     }
 
     void remove(int x) {
-		if (!root) {
-			return;
-		}
+        if (!root) {
+            return;
+        }
         if (root->value == x && !root->left && !root->right) {
             delete root;
             root = NULL;
